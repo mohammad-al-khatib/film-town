@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useEffect } from 'react';
+import Cards from './components/Cards';
+import Header from './components/Header';
+import SearchBar from './components/SearchBar';
+import { DataContext } from './context/dataContext';
+import { fetchData } from './utils/fetchData';
 
-function App() {
+const URL = 'https://api.themoviedb.org/3/movie/popular?api_key=d8d436ca878e548c5f0a4b2514f1e60b'
+
+const  App = () => {
+  const { setMovies } = useContext(DataContext);
+  const {filteredMovies ,setFilteredMovies} = useContext(DataContext);
+
+  useEffect(() => {
+    fetchData(URL, setMovies, setFilteredMovies)
+  }, [setMovies, setFilteredMovies])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <SearchBar />
+      <Cards movies={filteredMovies}/>
     </div>
   );
 }
